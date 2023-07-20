@@ -12,8 +12,7 @@ Meowscript is a.. uhh. Let's just say a cat inspired programming language? (I mi
 
 - **Paw-some syntax**: Meowscript's syntax is not really designed to be easy to read. But it's fun.. I guess
 
-- **Adorable standard library**: Meowscript comes with a standard library filled with cat-themed functions and utilities. From `scratch` to `meow`, the standard library adds a feline touch to your programming experience.
-
+- **Adorable standard library**: Meowscript comes with a standard library filled with cat-themed functions and utilities. From `scratch` to `meow`, the standard library adds makes your coding experience much cuter 
 ## Running Locally
 
 To get started with Meowscript, follow these steps:
@@ -45,7 +44,7 @@ cd MeowScript
 3. **Running Meowscript Code**: For now you have to build your own binary or use cargo to run MeowScript
 
    ```
-   cargo run run your_file.ms
+   cargo run run your_file.meow
    ```
 
     > There are 2 'run's 'cause 1st "run" is required by cargo and the 2nd one is for the built binary. This will make much more sense in the future
