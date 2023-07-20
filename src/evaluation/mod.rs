@@ -161,7 +161,7 @@ impl Eval {
                             store.anew(name, val);
                             None
                         }
-                        None => Some(Object::Error(format!("identifier not found: {}", name))),
+                        None => Some(Object::Error(format!("Meow-sterious! The identifier '{}' seems to be playing a game of hide-and-seek", name))),
                     }
                 }
             }
@@ -534,7 +534,7 @@ impl Eval {
         let (params, body, store) = match self.eval_expr(function) {
             Some(Object::Fn(params, body, store)) => (params, body, store),
             Some(Object::Inbuilt(func)) => return func(args),
-            Some(o) => return Object::Error(format!("function not found: {}", o)),
+            Some(o) => return Object::Error(format!("🙀 Cat-tastrophe alert! The function '{}' is nowhere to be found, like a clever cat hiding in plain sight", o)),
             None => return Object::Null,
         };
 
@@ -599,7 +599,7 @@ impl Eval {
         };
         match self.store.borrow_mut().get(&i) {
             Some(i) => i,
-            None => Object::Error(format!("identifier not found: {}", i)),
+            None => Object::Error(format!("😾 Meow-sterious! The identifier '{}' seems to be playing a game of hide-and-seek", i)),
         }
     }
 

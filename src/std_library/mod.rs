@@ -23,6 +23,7 @@ pub fn get_std_lib(lib: String) -> Option<Res> {
         "nya:whiskers" => Some(string::add_globals()),
         "nya:scratchpad" => Some(fs::add_globals()),
         "nya:catculator" => Some(math::add_globals()),
+        //"nya:meowternet" => Some(http::add_globals()),
         _ => None,
     }
 }

@@ -1,0 +1,24 @@
+
+scratch fizzbuzz = pawction (x) {
+    purrhaps (x % 15 == 0) {
+        tail "FizzBuzz";
+    } meowtually purrhaps (x % 3 == 0) {
+        tail "Fizz";
+    } meowtually purrhaps (x % 5 == 0) {
+        tail "Buzz";
+    } meowtually {
+        tail x;
+    }
+};
+
+
+
+scratch i = 0;
+
+furrever {  
+    purrhaps (i == 100) {
+        hiss;
+    }
+    meow(fizzbuzz(i));
+    amew i = i + 1;
+}

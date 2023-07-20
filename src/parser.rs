@@ -501,7 +501,7 @@ impl Parser {
             Token::Ident(ref mut ident) => idents.push(Ident(ident.clone())),
             _ => {
                 self.errors.push(
-                   format!("Expected identifier as parameter name. Got: {}", self.current_token)
+                   format!("Meow! Expected a purr-ameter identifier. Got: {} 🙀", self.current_token)
                 );
                 return None;
             }
@@ -607,7 +607,7 @@ impl Parser {
 
     fn peek_error(&mut self, t: Token) {
         let msg = format!(
-            "Expected next token to be {}, got {} instead",
+            "Meowch! Expected {} as the next token, but got {}",
             t,
             self.peek_token
         );

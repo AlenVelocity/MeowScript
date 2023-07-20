@@ -1,0 +1,2 @@
+[target.wasm32-unknown-emscripten]
+rustflags = ["-C", "link-args=--js-library lib.js -O3 -s MODULARIZE=1 -s EXPORT_NAME=MeowScript -s -s EXPORTED_RUNTIME_METHODS=[FS,intArrayFromString,writeArrayToMemory,_malloc,UTF8ToString]"]

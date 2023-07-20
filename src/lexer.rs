@@ -17,6 +17,20 @@ lazy_static::lazy_static! {
         keywords.insert("furrever", Token::Loop);
         keywords.insert("hiss", Token::Break);
         keywords.insert("continue", Token::Continue);
+
+        // Kaomojis
+        /* 
+        keywords.insert("＾◡＾っ", Token::Return);
+        keywords.insert("╯°□°╯", Token::Break);
+        keywords.insert("≧^◡^≦", Token::Boolean(true));
+        keywords.insert("｡•́︿•̀｡", Token::Boolean(false));
+        keywords.insert("=^･_･^=〇", Token::Continue);
+        keywords.insert("◔.◔", Token::If);
+        keywords.insert("´υ｀", Token::Else);
+        keywords.insert("๑╹o╹", Token::Set);
+        keywords.insert("o_o", Token::Func);
+        keywords.insert(">人<", Token::Else);
+        */
         keywords
     };
 }
