@@ -1,7 +1,6 @@
 <div align="center">
 
 # Meowscript 🐾
-
 Meowscript is a.. uhh. Let's just say a cat inspired programming language? (I might need help with this)
 
 </div>
