@@ -30,17 +30,17 @@ const yarn = `pawckage "nya:clawtility";
 pawckage "nya:catculator";
 
 scratch play_with_yarn = pawction () {
-    scratch yarn_length = 10;
+    scratch yarn_length = 1;
 
     meow("Let's play with yarn!");
 
-	scratch i = 1;
+	scratch lives = 9;
     furrever {
-		purrhaps (yarn_length == i) {
+		purrhaps (yarn_length == lives) {
 			hiss;
 		}
-        meow("Playing with yarn loop ", i);
-		amew i = i + 1;
+        meow("Playing with yarn loop ", lives);
+		amew lives = lives - 1;
     }
 
     meow("Finished playing with yarn!");
