@@ -5,6 +5,8 @@ Meowscript is an simple interpurrter inspired buy our feline friends
 
 </div>
 
+Try it out [here](https://meowscript.vercel.app/)
+
 ## Features
 
 - **Cat inspired keywords**: Meowscript replaces traditional programming keywords with cat-related terms. Like `purrhaps`, `pawction`, `hiss` ect. (Bonus points if you can guess what these ones do)
