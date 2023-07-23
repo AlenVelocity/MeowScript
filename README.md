@@ -1,7 +1,10 @@
 <div align="center">
+   
+<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/66544823/255400114-46c25c37-9161-476f-b22b-2150292a0b3c.png" alt="tl" border="0" width="128">   
 
 # Meowscript 🐾
 Meowscript is a.. uhh. Let's just say a cat inspired programming language? (I might need help with this)
+
 
 </div>
 
