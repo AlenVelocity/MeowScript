@@ -1,8 +1,7 @@
 <div align="center">
    
 # Meowscript 🐾
-Meowscript is a.. uhh. Let's just say a cat inspired programming language? (I might need help with this)
-
+Meowscript is an simple interpurrter inspired buy our feline friends
 
 </div>
 
@@ -53,5 +52,12 @@ cd MeowScript
     ```
     cargo run
     ```
+
+---
+ 
+The main purpose of this project was for me to learn/understand rust better so it's not had to see some inconsistencies with my code. Feel free to conttibute and make MeowScript more purrfect
+
+
+
 
  
