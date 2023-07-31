@@ -6,7 +6,8 @@ use std::collections::HashMap;
 /// The global environment is a HashMap of names to objects.
 pub fn new_globals() -> HashMap<String, Object> {
     let mut globals = HashMap::new();
-    globals.insert(String::from("meow"), Object::Inbuilt(log));
+    globals.insert(String::from("meow"), Object::Inbuilt(meow));
+    globals.insert(String::from("log"), Object::Inbuilt(log));
     globals
 }
 
@@ -20,6 +21,19 @@ fn log(args: Vec<Object>) -> Object {
     } else {
         for arg in args {
             print!("{} ", arg);
+        }
+        println!();
+    }
+    Object::Null
+}
+
+fn meow(args: Vec<Object>) -> Object {
+    if args.is_empty() {
+        return Object::Error(String::from("Wrong number of arguments"));
+    } else {
+        print!("Meow!");
+        for arg in args {
+            print!(" {}", arg);
         }
         println!();
     }

@@ -217,6 +217,16 @@ impl Parser {
             Token::LeftBrace => self.parse_object_literal(),
             Token::Typeof => self.parse_typof_expr(),
             Token::Loop => self.parse_loop_expr(),
+            Token::SingleQuoteS => {
+                self.next_token();
+                match self.parse_ident() {
+                    Some(Expr::Ident(ident)) => Some(Expr::Index {
+                        array: Box::new(Expr::Ident(Ident("self".to_string()))), // Assuming 'self' is the dictionary object
+                        index: Box::new(Expr::Literal(Literal::String(ident.0))),
+                    }),
+                    _ => None,
+                }
+            }
             _ => {
                 None
             }
@@ -361,10 +371,33 @@ impl Parser {
 
     fn parse_ident(&mut self) -> Option<Expr> {
         match self.current_token {
-            Token::Ident(ref mut ident) => Some(Expr::Ident(Ident(ident.clone()))),
+            Token::Ident(_) => {
+                let ident = match &self.current_token {
+                    Token::Ident(ident) => ident.clone(),
+                    _ => return None,
+                };
+                if self.peek_token(&Token::SingleQuoteS) {
+                    self.next_token(); 
+                    self.next_token();
+                    if let Token::Ident(prop) = &self.peek_token {
+                        let property = prop.clone();
+                        self.next_token();
+                        return Some(Expr::Index {
+                            array: Box::new(Expr::Ident(Ident(ident))),
+                            index: Box::new(Expr::Literal(Literal::String(property))),
+                        });
+                    } else {
+                        self.errors.push(format!("Expected an identifier after '"));
+                        return None;
+                    }
+                } else {
+                    return Some(Expr::Ident(Ident(ident)));
+                }
+            }
             _ => None,
         }
     }
+    
 
     fn parse_prefix_expr(&mut self) -> Option<Expr> {
         let prefix = match self.current_token {

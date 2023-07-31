@@ -177,6 +177,13 @@ impl Lexer {
                     _ => Token::Greater
                 },
             '"' => Token::String(self.read_string()),
+            '\'' => {
+                if self.peek_char() == 's' {
+                    Token::SingleQuoteS
+                } else {
+                    Token::Illegal
+                }
+            } 
             '\u{0}' => Token::Eof,
             _ => {
                 if is_letter(self.ch) {

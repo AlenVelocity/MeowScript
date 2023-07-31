@@ -48,6 +48,7 @@ pub enum Token {
     RightBrace,
     LeftBracket,
     RightBracket,
+    SingleQuoteS,
 
     // Keywords
     Set,
