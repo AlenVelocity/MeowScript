@@ -26,28 +26,40 @@ scratch take_a_nap = pawction () {
 
 take_a_nap();`
 
-const yarn = `pawckage "nya:clawtility";
-pawckage "nya:catculator";
+const yarn = `pawckage "nya:catculator";
+pawckage "nya:clawtility";
+
+scratch cat = {
+    "name": "Whiskers",
+    "age": 3,
+    "breed": "Siamese",
+    "color": "seal point",
+};
+
+meow("");
+scratch age = cat's age * 12;
+
+meow(cat's name, "is a", cat's color, cat's breed, "cat!", "He is", age, "months old.");
 
 scratch play_with_yarn = pawction () {
-    scratch yarn_length = 1;
+    scratch yarn_length = 0;
 
     meow("Let's play with yarn!");
 
-	scratch lives = 9;
+    scratch lives = 9;
     furrever {
-		purrhaps (yarn_length == lives) {
-			hiss;
-		}
-        meow("Playing with yarn loop ", lives);
-		amew lives = lives - 1;
+        purrhaps (yarn_length == lives) {
+            hiss;
+        }
+        meow(cat's name, "is playing with yarn loop ", -lives + 10);
+        amew lives = lives - 1;
     }
 
     meow("Finished playing with yarn!");
 };
 
-play_with_yarn();
-`
+
+play_with_yarn();`
 
 const toy = `pawckage "nya:clawtility";
 pawckage "nya:catculator";
@@ -111,6 +123,7 @@ furrever {
     meow(fizzbuzz(i));
     amew i = i + 1;
 }`
+
 
 export const examples: Record<string, string> = {
   naptime,
