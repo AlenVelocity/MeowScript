@@ -1,4 +1,5 @@
-# Meow Script Interpreter
+# MeowScript 
+## the purrfect programming language
 
 ![Meow Script Logo](link-to-your-logo.png)
 
