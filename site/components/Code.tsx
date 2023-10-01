@@ -1,16 +1,15 @@
+import React, { useEffect, useRef, useState } from 'react';
+import Editor from 'react-simple-code-editor';
+import Prism, { highlight } from 'prismjs';
+import classNames from 'classnames';
+import useBreakpoint from 'use-breakpoint';
+
+import { MeowScriptWorker } from '../lib/MeowScriptWorker';
+import { createMeowScriptWorker } from '../lib/create_meowscript_worker';
+import { examples } from '../lib/example';
+import { meowScriptSyntax } from '../lib/syntax';
+import CodeDropdown from './CodeDropdown';
 import 'prismjs/themes/prism-tomorrow.css'
-
-import classNames from 'classnames'
-import Prism, { highlight } from 'prismjs'
-import React, { useEffect, useRef, useState } from 'react'
-import Editor from 'react-simple-code-editor'
-import useBreakpoint from 'use-breakpoint'
-
-import { MeowScriptWorker } from '../lib/MeowScriptWorker'
-import { createMeowScriptWorker } from '../lib/create_meowscript_worker'
-import { examples } from '../lib/example'
-import { meowScriptSyntax } from '../lib/syntax'
-import CodeDropdown from './CodeDropdown'
 
 const BREAKPOINTS = { mobile: 0, tablet: 768, desktop: 1280 }
 
