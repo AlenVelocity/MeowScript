@@ -44,7 +44,7 @@ Start the development server:
 bash
 Copy code
 npm run dev
-Open your browser and navigate to http://localhost:3000 to access the Meow Script interpreter.
+Open your browser and navigate to http://localhost:3000 to access the MeowScript interpreter.
 
 Documentation
 Explore our comprehensive documentation to learn more about Meow Script's syntax, features, and how to use it effectively. Whether you're a beginner or an experienced developer, our documentation will help you get started.
@@ -55,10 +55,6 @@ Visit our interactive playground to experiment with Meow Script code in real-tim
 Contributing
 We welcome contributions from the open-source community. If you'd like to contribute to the Meow Script Interpreter project, please follow our contributing guidelines.
 
-License
-This project is licensed under the MIT License. Feel free to use, modify, and distribute it as per the terms of the license.
-
-Let's make programming more fun with Meow Script! If you have any questions or need assistance, please don't hesitate to reach out.
 
 Happy coding! 😺
 
