@@ -1,7 +1,6 @@
 # MeowScript 
 ## the purrfect programming language
 
-![Meow Script Logo](link-to-your-logo.png)
 
 Meow Script is a simple interpreter inspired by cats, designed to make programming fun and intuitive.
 
@@ -33,7 +32,7 @@ Follow these steps to set up the Meow Script interpreter locally:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/meow-script-interpreter.git
+   git clone https://github.com/alenvelocity/meowscript.git
 Install dependencies:
 
 bash
