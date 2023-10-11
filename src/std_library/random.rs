@@ -2,6 +2,22 @@ extern crate rand;
 use rand::seq::SliceRandom;
 use rand::Rng;
 
+
+pub fn add_globals() -> Res {
+    let mut globals = HashMap::new();
+    globals.insert(String::from("new"), Object::Inbuilt(new));
+    globals.insert(String::from("random"), Object::Inbuilt(random));
+    globals.insert(String::from("uniform"), Object::Inbuilt(uniform));
+    globals.insert(String::from("randint"), Object::Inbuilt(randint));
+    globals.insert(String::from("choice"), Object::Inbuilt(choice));
+    globals.insert(String::from("shuffle"), Object::Inbuilt(shuffle));
+
+
+    Res {
+        globals,
+        raw: None,
+    }
+}
 pub struct SimpleRandom {
     rng: rand::rngs::ThreadRng,
 }
