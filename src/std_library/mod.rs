@@ -6,6 +6,7 @@ pub mod array;
 pub mod fs;
 pub mod string;
 pub mod math;
+pub mod random;
 /// Function to load a standard library 
 /// # Arguments
 /// * `lib` - The name of the library to load.
@@ -23,6 +24,7 @@ pub fn get_std_lib(lib: String) -> Option<Res> {
         "nya:whiskers" => Some(string::add_globals()),
         "nya:scratchpad" => Some(fs::add_globals()),
         "nya:catculator" => Some(math::add_globals()),
+        "nya:rundamn" => Some(random::add_globals()),
         //"nya:meowternet" => Some(http::add_globals()),
         _ => None,
     }
