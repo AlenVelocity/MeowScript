@@ -1,8 +1,8 @@
 # MeowScript reference
 
-MeowScript is a small, dynamically typed scripting language. Its keywords are cat puns, its values are the usual ones under different names, and its interpreter is written in Rust. This page is the whole language.
+MeowScript is a small, dynamically typed scripting language with cat puns for keywords. The values are the usual ones under different names, and the interpreter is written in Rust. This page is the whole language.
 
-If you just want to poke at it, the [playground](/#playground) runs everything on this page. Every listing has a *Try it* button.
+Every listing here has a *Try it* button that loads it into the [playground](/#playground).
 
 ## A first program
 
@@ -128,7 +128,7 @@ Only `mew` and `clawful` are falsy. `0`, `""`, and `[]` are all truthy, so `purr
 
 ## Conditions
 
-`purrhaps` is if, `meowtually` is else. Parentheses around the condition are optional. Chains work as you'd expect.
+`purrhaps` is if, `meowtually` is else. Parentheses around the condition are optional. Chain them with `meowtually purrhaps`.
 
 ```meow
 purrhaps hour < 6 {
@@ -175,7 +175,7 @@ fur i ~ 3                 { purr(i); }       // 0 1 2
 
 ## Pawctions
 
-Declare a named pawction, or make an anonymous one and keep it in a variable. Either way they are values: pass them around, return them, put them in furrballs.
+Declare a named pawction, or make an anonymous one and keep it in a variable. Either way it is a value, so it can be passed to another pawction or returned from one.
 
 ```meow
 pawction add(a, b) {

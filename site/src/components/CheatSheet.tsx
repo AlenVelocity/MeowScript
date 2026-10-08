@@ -26,7 +26,7 @@ export function CheatSheet() {
         Cat to human
       </h2>
       <p className="mt-2 max-w-[62ch] text-muted">
-        Every keyword is a pun, and every pun means exactly one ordinary thing. This is the whole vocabulary.
+        Each keyword is a pun for one ordinary thing. This is the whole vocabulary.
       </p>
       <div className="mt-6 overflow-x-auto">
         <table className="w-full min-w-[560px] border-collapse text-[14px]">
