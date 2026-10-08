@@ -93,7 +93,12 @@ export default function Home() {
             Run it on your own machine
           </h2>
           <p className="mt-2 max-w-[62ch] text-muted">
-            The command line build adds a REPL and file access. It needs a Rust toolchain.
+            The command line build adds a REPL and file access. Prebuilt binaries for Windows, macOS, and Linux are on
+            the{" "}
+            <Link href="/download" className="text-text underline decoration-line underline-offset-4 hover:text-accent">
+              download page
+            </Link>
+            , or build it with cargo:
           </p>
           <div className="max-w-[720px]">
             <CodeBlock

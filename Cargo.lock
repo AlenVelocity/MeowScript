@@ -124,14 +124,14 @@ dependencies = [
 
 [[package]]
 name = "meowscript"
-version = "1.0.0"
+version = "0.1.0"
 dependencies = [
  "indexmap",
 ]
 
 [[package]]
 name = "meowscript-cli"
-version = "1.0.0"
+version = "0.1.0"
 dependencies = [
  "clap",
  "meowscript",
@@ -139,7 +139,7 @@ dependencies = [
 
 [[package]]
 name = "meowscript-wasm"
-version = "1.0.0"
+version = "0.1.0"
 dependencies = [
  "js-sys",
  "meowscript",

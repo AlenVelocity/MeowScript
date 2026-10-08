@@ -7,13 +7,13 @@ members = [
 ]
 
 [workspace.package]
-version = "1.0.0"
+version = "0.1.0"
 edition = "2024"
 repository = "https://github.com/AlenVelocity/MeowScript"
 rust-version = "1.88"
 
 [workspace.dependencies]
-meowscript = { path = "crates/meowscript", version = "1.0.0" }
+meowscript = { path = "crates/meowscript", version = "0.1.0" }
 indexmap = "2"
 
 [profile.release]
