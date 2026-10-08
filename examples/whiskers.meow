@@ -1,0 +1,17 @@
+// A tour of the nya:whiskers pawckage.
+pawckage "nya:whiskers";
+
+scratch greeting = "  meow meow, purr  ";
+purr("[" + trim(greeting) + "]");
+purr(upper(trim(greeting)));
+purr(split(trim(greeting), " "));
+purr(replace(trim(greeting), "meow", "nya"));
+purr(starts_with(trim(greeting), "meow"), ends_with(trim(greeting), "purr"));
+purr(pawrse("42") + 1, pawrse("nine"));
+purr(pad_start("7", 3, "0"), "|" + pad_end("cat", 6, ".") + "|");
+purr(reverse("stressed"));
+purr(length("🐱 cat"), "characters");
+
+fur letter ~ "cat" {
+    purr(letter, "-", letter * 3);
+}

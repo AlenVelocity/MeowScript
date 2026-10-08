@@ -1,0 +1,6 @@
+// Pulling in another file with pawckage. The path is relative to this file.
+pawckage "./lib/kitty_math.meow";
+
+purr("A cat that fell off the sofa twice has", lives_left(2), "lives left.");
+purr("A round cat of radius 3 covers about", circle_area(3), "square paws.");
+purr("Nine lives is", NINE_LIVES);

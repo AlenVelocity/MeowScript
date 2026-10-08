@@ -1,22 +1,23 @@
-[package]
-name = "meowscript"
-version = "0.1.0"
-edition = "2021"
+[workspace]
+resolver = "2"
+members = [
+    "crates/meowscript",
+    "crates/meowscript-cli",
+    "crates/meowscript-wasm",
+]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[workspace.package]
+version = "1.0.0"
+edition = "2024"
+repository = "https://github.com/AlenVelocity/MeowScript"
+rust-version = "1.88"
 
-[dependencies]
-pest = "2.1"
-pest_derive = "2.1"
-rand = "0.8.5"
-lazy_static = "1.4.0"
-reqwest = { version = "0.11.10", features = ["blocking", "json"] }
+[workspace.dependencies]
+meowscript = { path = "crates/meowscript", version = "1.0.0" }
+indexmap = "2"
 
-[[bin]]
-name = "meowscript"
-path = "src/main.rs"
-
-[target.'cfg(not(target_os = "emscripten"))'.dependencies]
-structopt = "0.3.23"
-chrono = "0.4.19"
-chrono-tz = "0.6.0"
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true

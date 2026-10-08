@@ -1,0 +1,225 @@
+@import "tailwindcss";
+
+/* Tokens. See DESIGN.md at the repository root for the reasoning. */
+@theme {
+  --color-*: initial;
+  --color-bg: #171310;
+  --color-surface: #201a15;
+  --color-surface-2: #2a231c;
+  --color-line: #3b3128;
+  --color-text: #f1e8d8;
+  --color-text-soft: #cdbfab;
+  --color-muted: #a09078;
+  --color-accent: #f0a048;
+  --color-accent-strong: #ffb860;
+  --color-paw: #e9a9bd;
+  --color-catnip: #a7d79c;
+  --color-danger: #f0846f;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+}
+
+@theme inline {
+  --font-display: var(--font-baloo), ui-rounded, "Segoe UI", system-ui, sans-serif;
+  --font-mono: var(--font-fira), ui-monospace, "Cascadia Code", Menlo, Consolas, monospace;
+  --font-sans: var(--font-mono);
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    line-height: 1.6;
+    /* Prose is set in the code font, but ligatures only belong in code. */
+    font-variant-ligatures: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  code,
+  pre,
+  .cm-editor {
+    font-variant-ligatures: normal;
+    font-feature-settings: "calt" 1;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-accent) 35%, transparent);
+  }
+
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1.5l5 5 5-5' fill='none' stroke='%23a09078' stroke-width='1.6' stroke-linecap='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+  }
+}
+
+/* The pun is spelled wrong on purpose, so it gets the spellchecker's squiggle. */
+.squiggle {
+  text-decoration: underline wavy var(--color-danger);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+.paw-step {
+  animation: paw-step 240ms ease-out both;
+}
+@keyframes paw-step {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paw-step {
+    animation: none;
+  }
+}
+
+/* Static listings. The editor uses the same colours in src/lib/meowscript-language.ts. */
+.tok-keyword {
+  color: var(--color-accent);
+}
+.tok-atom,
+.tok-number {
+  color: var(--color-catnip);
+}
+.tok-string {
+  color: var(--color-paw);
+}
+.tok-comment {
+  color: var(--color-muted);
+  font-style: italic;
+}
+.tok-operator,
+.tok-punctuation {
+  color: var(--color-text-soft);
+}
+.tok-invalid {
+  color: var(--color-danger);
+  text-decoration: underline wavy;
+}
+
+.docs {
+  max-width: 72ch;
+}
+.docs h1 {
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+.docs h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-line);
+  scroll-margin-top: 80px;
+}
+.docs h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 32px;
+  scroll-margin-top: 80px;
+}
+.docs p,
+.docs ul,
+.docs ol {
+  margin-top: 12px;
+  color: var(--color-text-soft);
+}
+.docs li {
+  margin-top: 6px;
+  padding-left: 4px;
+}
+.docs ul {
+  list-style: disc;
+  padding-left: 22px;
+}
+.docs ol {
+  list-style: decimal;
+  padding-left: 22px;
+}
+.docs strong {
+  color: var(--color-text);
+  font-weight: 400;
+}
+.docs a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--color-line);
+  text-underline-offset: 4px;
+}
+.docs a:hover {
+  color: var(--color-accent);
+  text-decoration-color: currentColor;
+}
+.docs :not(pre) > code {
+  color: var(--color-text);
+  background: var(--color-surface-2);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.93em;
+}
+.docs table {
+  width: 100%;
+  margin-top: 16px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.docs th {
+  text-align: left;
+  font-weight: 400;
+  color: var(--color-muted);
+  font-size: 13px;
+  padding: 0 12px 8px 0;
+  border-bottom: 1px solid var(--color-line);
+}
+.docs td {
+  padding: 8px 12px 8px 0;
+  border-bottom: 1px solid var(--color-line);
+  vertical-align: top;
+  color: var(--color-text-soft);
+}
+.docs td:first-child {
+  white-space: nowrap;
+}
+.docs blockquote {
+  margin-top: 12px;
+  padding-left: 14px;
+  border-left: 2px solid var(--color-accent);
+  color: var(--color-text-soft);
+}

@@ -1,2 +1,5 @@
-[target.wasm32-unknown-emscripten]
-rustflags = ["-C", "link-args=--js-library lib.js -O3 -s MODULARIZE=1 -s EXPORT_NAME=MeowScript -s -s EXPORTED_RUNTIME_METHODS=[FS,intArrayFromString,writeArrayToMemory,_malloc,UTF8ToString]"]
+# The interpreter recurses on the stack, so give the WebAssembly build
+# more room than the 1 MiB default. Linear memory grows on demand, so the
+# cost is reserved address space, not RAM.
+[target.wasm32-unknown-unknown]
+rustflags = ["-C", "link-arg=-zstack-size=33554432"]

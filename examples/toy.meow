@@ -1,0 +1,23 @@
+// Random choices from the nya:rundamn pawckage.
+pawckage "nya:rundamn";
+
+scratch toy_box = ["Feather Wand", "Catnip Mouse", "Yarn Ball", "Squeaky Mouse"];
+
+pawction play_with(toy) {
+    scratch sessions = randint(3, 6);
+    meow("Let's play with the", toy + "!");
+
+    fur session ~ sessions {
+        purrhaps toy == "Feather Wand" {
+            meow("Chasing the feather!");
+        } meowtually purrhaps toy == "Squeaky Mouse" {
+            meow("Squeak! Squeak!");
+        } meowtually {
+            meow("Having fun with the", toy);
+        }
+    }
+
+    meow("I'm tired now. Time for a catnap!");
+}
+
+play_with(choice(toy_box));

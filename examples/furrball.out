@@ -1,0 +1,10 @@
+We have 5 cats: Tom, Garfield, Felix, Salem, Luna
+["Tom!", "Garfield!", "Felix!", "Salem!", "Luna!"]
+Short names: ["Tom", "Luna"]
+Letters in all the names: 25
+Sorted: ["Felix", "Garfield", "Luna", "Salem", "Tom"]
+Backwards: ["Luna", "Salem", "Felix", "Garfield", "Tom"]
+The middle two: ["Garfield", "Felix"]
+Is Salem here? purrfect
+Squares: [1, 4, 9, 16, 25]
+Luna left, so now there are 4

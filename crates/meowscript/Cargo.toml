@@ -1,0 +1,12 @@
+[package]
+name = "meowscript"
+description = "The purrfect programming language: a cat-themed scripting language and its interpreter"
+version.workspace = true
+edition.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+indexmap.workspace = true
+
+[dev-dependencies]
