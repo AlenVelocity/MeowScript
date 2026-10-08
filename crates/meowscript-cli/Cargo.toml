@@ -1,0 +1,25 @@
+[package]
+name = "meowscript-cli"
+description = "Command line runner and REPL for MeowScript"
+version.workspace = true
+edition.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[[bin]]
+name = "meowscript"
+path = "src/main.rs"
+
+[dependencies]
+meowscript.workspace = true
+# Colour output is left off on purpose: it pulls in `windows-sys`, which
+# needs `dlltool` on the windows-gnu toolchain. Everything else in clap's
+# default set is kept.
+clap = { version = "4", default-features = false, features = [
+    "std",
+    "derive",
+    "help",
+    "usage",
+    "error-context",
+    "suggestions",
+] }

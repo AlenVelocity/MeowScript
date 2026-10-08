@@ -1,0 +1,14 @@
+// Recursion, and purrhaps as an expression.
+pawction fib(n) {
+    purrhaps n < 2 { tail n; }
+    tail fib(n - 1) + fib(n - 2);
+}
+
+pawction factorial(n) {
+    purrhaps n <= 1 { 1 } meowtually { n * factorial(n - 1) }
+}
+
+fur i ~ 10 {
+    purr("fib(" + i + ") =", fib(i));
+}
+purr("10! =", factorial(10));

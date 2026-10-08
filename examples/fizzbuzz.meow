@@ -1,0 +1,15 @@
+// The classic, with a cat's vocabulary.
+pawction fizzbuzz(n) {
+    purrhaps n % 15 == 0 {
+        tail "FizzBuzz";
+    } meowtually purrhaps n % 3 == 0 {
+        tail "Fizz";
+    } meowtually purrhaps n % 5 == 0 {
+        tail "Buzz";
+    }
+    tail n;
+}
+
+fur i ~ 15 {
+    purr(fizzbuzz(i + 1));
+}

@@ -1,0 +1,17 @@
+// Pawctions remember the scope they were born in.
+pawction make_counter(name) {
+    scratch count = 0;
+    tail pawction() {
+        amew count = count + 1;
+        meow(name, "has been petted", count, "times");
+        tail count;
+    };
+}
+
+scratch pet_tom = make_counter("Tom");
+scratch pet_luna = make_counter("Luna");
+
+pet_tom();
+pet_tom();
+pet_luna();
+pet_tom();

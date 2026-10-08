@@ -1,35 +1,40 @@
 {
-  "name": "site",
-  "version": "0.1.0",
+  "name": "meowscript-site",
+  "version": "1.0.0",
   "private": true,
+  "description": "Playground and docs for MeowScript, the purrfect programming language",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "pnpm sync",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "sync": "node scripts/sync-examples.mjs && node scripts/sync-stdlib.mjs",
+    "build:wasm": "node scripts/build-wasm.mjs"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.15",
-    "@heroicons/react": "^1.0.6",
-    "@tailwindcss/aspect-ratio": "^0.4.2",
-    "@types/node": "20.4.2",
-    "@types/react": "18.2.15",
-    "@types/react-dom": "18.2.7",
-    "comlink": "^4.4.1",
-    "next": "13.4.10",
-    "prismjs": "^1.29.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-markdown": "^8.0.7",
-    "react-simple-code-editor": "^0.13.1",
-    "typescript": "5.1.6",
-    "use-breakpoint": "^3.1.1"
+    "@codemirror/autocomplete": "^6.18.0",
+    "@codemirror/commands": "^6.8.0",
+    "@codemirror/language": "^6.11.0",
+    "@codemirror/state": "^6.5.0",
+    "@codemirror/view": "^6.36.0",
+    "@lezer/highlight": "^1.2.0",
+    "next": "16.4.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
-    "@types/classnames": "^2.3.1",
-    "@types/prismjs": "^1.26.0",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.26",
-    "tailwindcss": "^3.3.3"
-  }
+    "@tailwindcss/turbopack": "^4.3.3",
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3"
+  },
+  "packageManager": "pnpm@11.5.1"
 }

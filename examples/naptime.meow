@@ -1,0 +1,17 @@
+// test: skip (this one sleeps)
+// nap() pauses the program. In the playground, watch the output arrive live.
+pawckage "nya:clawtility";
+pawckage "nya:rundamn";
+
+pawction take_a_nap() {
+    furrever {
+        meow("...zZz...");
+        nap(600);
+        purrhaps randint(1, 3) == 3 {
+            hiss;
+        }
+    }
+    meow("I woke up! ^-^");
+}
+
+take_a_nap();

@@ -1,0 +1,24 @@
+// A tour of the nya:furrball pawckage.
+pawckage "nya:furrball";
+
+scratch cats = ["Tom", "Garfield", "Felix", "Salem"];
+push(cats, "Luna");
+purr("We have", length(cats), "cats:", join(cats, ", "));
+
+scratch shouty = map(cats, pawction(name) { name + "!" });
+purr(shouty);
+
+scratch short_names = filter(cats, pawction(name) { length(name) <= 4 });
+purr("Short names:", short_names);
+
+scratch letters = reduce(cats, pawction(total, name) { total + length(name) }, 0);
+purr("Letters in all the names:", letters);
+
+purr("Sorted:", sort(cats));
+purr("Backwards:", reverse(cats));
+purr("The middle two:", slice(cats, 1, 3));
+purr("Is Salem here?", "Salem" ~ cats);
+purr("Squares:", map(range(1, 6), pawction(n) { n * n }));
+
+scratch last_cat = pounce(cats);
+purr(last_cat, "left, so now there are", length(cats));

@@ -1,0 +1,5 @@
+// Every program starts with a meow.
+meow("Hello, world!");
+
+// purr prints without the announcement.
+purr("The cat says:", "meow", 3, "times");

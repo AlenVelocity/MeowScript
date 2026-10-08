@@ -1,0 +1,24 @@
+// Objects, the possessive 's, and a loop with a condition.
+scratch cat = {
+    name: "Whiskers",
+    age: 3,
+    breed: "Siamese",
+    color: "seal point",
+};
+
+scratch months = cat's age * 12;
+meow(cat's name, "is a", cat's color, cat's breed, "cat. He is", months, "months old.");
+
+pawction play_with_yarn(lives) {
+    meow("Let's play with yarn!");
+    furrever lives > 0 {
+        meow(cat's name, "is playing with yarn, round", 10 - lives);
+        amew lives = lives - 1;
+    }
+    meow("Finished playing with yarn!");
+}
+
+play_with_yarn(9);
+
+amew cat's age = cat's age + 1;
+meow("Happy birthday!", cat's name, "is now", cat's age);

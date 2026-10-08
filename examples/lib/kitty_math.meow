@@ -1,0 +1,13 @@
+// A pawckage is just a .meow file. Everything scratched at the top level
+// is shared with whoever pawckages it. The nya: pawckages it uses stay private.
+pawckage "nya:catculator";
+
+scratch NINE_LIVES = 9;
+
+pawction lives_left(deaths) {
+    tail max(NINE_LIVES - deaths, 0);
+}
+
+pawction circle_area(radius) {
+    tail round(PI * radius * radius);
+}
