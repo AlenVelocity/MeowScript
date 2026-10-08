@@ -15,6 +15,9 @@ export function SiteHeader() {
         <Link href="/docs" className="py-2 hover:text-text">
           Docs
         </Link>
+        <Link href="/download" className="py-2 hover:text-text">
+          Download
+        </Link>
         <a href="https://github.com/AlenVelocity/MeowScript" className="py-2 hover:text-text">
           GitHub
         </a>

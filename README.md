@@ -58,10 +58,12 @@ Meow-sterious! name error: `cuont` hasn't been `scratch`ed yet; did you mean `co
 
 ## Install
 
-With a Rust toolchain:
+Prebuilt binaries for Windows x64, macOS (Apple silicon and Intel), and Linux (x64 and arm64) are on the [releases page](https://github.com/AlenVelocity/MeowScript/releases/latest), with a `SHA256SUMS.txt`. The [download page](https://meowscript.vercel.app/download) picks the right file for each platform and explains the unsigned-binary warnings on Windows and macOS. Unpack the archive and put `meowscript` on your PATH.
+
+With a Rust toolchain (1.88 or newer):
 
 ```bash
-cargo install --git https://github.com/AlenVelocity/MeowScript meowscript-cli
+cargo install --git https://github.com/AlenVelocity/MeowScript --tag v0.1.0 meowscript-cli
 ```
 
 ```
@@ -70,6 +72,8 @@ meowscript hello.meow         # run a file
 meowscript eval "1 + 2"       # evaluate a snippet
 meowscript packages           # what the nya: pawckages contain
 ```
+
+Changes between versions are in [CHANGELOG.md](CHANGELOG.md).
 
 ## Layout
 

@@ -243,6 +243,8 @@ The exclamation tells you the kind: *Meowch!* for syntax, *Meow-sterious!* for a
 
 ## The command line
 
+Prebuilt binaries are on the [download page](/download). With a Rust toolchain you can also build it yourself:
+
 ```
 cargo install --git https://github.com/AlenVelocity/MeowScript meowscript-cli
 

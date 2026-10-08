@@ -62,3 +62,12 @@ and commit the results in `site/public/wasm` and `site/src/generated`. CI checks
 ## Pull requests
 
 Say what changed and why. If it changes the language, show a before and after.
+
+## Releasing
+
+1. Set the new version in `Cargo.toml` (the `[workspace.package]` entry and the `meowscript` dependency) and in `site/package.json`, then run `cargo build` so `Cargo.lock` follows.
+2. In `site/`, run `pnpm build:wasm && pnpm sync`, so the playground and docs report the new version.
+3. Add a section to `CHANGELOG.md` headed `## X.Y.Z (YYYY-MM-DD)`. The release workflow uses it as the release notes.
+4. Merge to master, then tag it: `git tag vX.Y.Z && git push origin vX.Y.Z`.
+
+The Release workflow builds the CLI for Windows x64, macOS (both chips), and Linux (x64 and arm64), and publishes a GitHub release with the archives and a `SHA256SUMS.txt`. It refuses a tag whose version differs from `Cargo.toml`. The download page links to `releases/latest/download/<asset>`, so the asset names must stay the same across releases.
