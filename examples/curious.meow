@@ -1,0 +1,40 @@
+// Catching trouble with curious and caught, and making your own with yowl.
+pawckage "nya:whiskers";
+
+pawction portion(order) {
+    scratch grams = pawrse(order);
+    purrhaps grams == mew {
+        yowl { reason: "that isn't a number", order };
+    }
+    purrhaps grams > 80 {
+        yowl "that's more kibble than one cat should eat";
+    }
+    tail grams;
+}
+
+fur order ~ ["40", "lots", "200"] {
+    curious {
+        meow("Serving", portion(order), "grams");
+    } caught problem {
+        purrhaps furreal problem == "object" {
+            meow("Can't serve", problem's order + ":", problem's reason);
+        } meowtually {
+            meow("Can't serve", order + ":", problem);
+        }
+    }
+}
+
+// Mistakes the interpreter finds arrive as an object with a kind, a message, and a line.
+curious {
+    scratch bowl = "full";
+    amew bowl = bowl - 1;
+} caught err {
+    purr(err's kind, "error on line", err's line + ":", err's message);
+}
+
+// Leave out the name after caught when you don't need it.
+curious {
+    yowl "the vase is on the floor";
+} caught {
+    meow("Nothing to see here.");
+}

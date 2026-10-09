@@ -36,6 +36,12 @@ pub enum TokenKind {
     /// `hiss`: break
     Hiss,
     Continue,
+    /// `curious`: try
+    Curious,
+    /// `caught`: catch
+    Caught,
+    /// `yowl`: throw
+    Yowl,
 
     Assign,
     Eq,
@@ -93,6 +99,9 @@ impl TokenKind {
             "fur" => TokenKind::Fur,
             "hiss" => TokenKind::Hiss,
             "continue" => TokenKind::Continue,
+            "curious" => TokenKind::Curious,
+            "caught" => TokenKind::Caught,
+            "yowl" => TokenKind::Yowl,
             _ => return None,
         })
     }
@@ -113,6 +122,9 @@ impl TokenKind {
         "fur",
         "hiss",
         "continue",
+        "curious",
+        "caught",
+        "yowl",
     ];
 
     pub fn describe(&self) -> String {
@@ -145,6 +157,9 @@ impl TokenKind {
             TokenKind::Fur => "fur",
             TokenKind::Hiss => "hiss",
             TokenKind::Continue => "continue",
+            TokenKind::Curious => "curious",
+            TokenKind::Caught => "caught",
+            TokenKind::Yowl => "yowl",
             TokenKind::Assign => "=",
             TokenKind::Eq => "==",
             TokenKind::NotEq => "!=",

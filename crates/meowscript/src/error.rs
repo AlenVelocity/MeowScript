@@ -10,6 +10,8 @@ pub enum ErrorKind {
     Import,
     Io,
     Runtime,
+    /// A `yowl` that no `curious` caught.
+    Thrown,
 }
 
 impl ErrorKind {
@@ -22,6 +24,21 @@ impl ErrorKind {
             ErrorKind::Import => "import error",
             ErrorKind::Io => "io error",
             ErrorKind::Runtime => "runtime error",
+            ErrorKind::Thrown => "uncaught yowl",
+        }
+    }
+
+    /// What `caught` sees as the error's `kind`.
+    pub fn word(self) -> &'static str {
+        match self {
+            ErrorKind::Syntax => "syntax",
+            ErrorKind::Name => "name",
+            ErrorKind::Type => "type",
+            ErrorKind::Arity => "arity",
+            ErrorKind::Import => "import",
+            ErrorKind::Io => "io",
+            ErrorKind::Runtime => "runtime",
+            ErrorKind::Thrown => "yowl",
         }
     }
 
@@ -34,6 +51,7 @@ impl ErrorKind {
             ErrorKind::Import => "Lost kitten!",
             ErrorKind::Io => "Scratched!",
             ErrorKind::Runtime => "Hiss!",
+            ErrorKind::Thrown => "Yowl!",
         }
     }
 }
@@ -101,6 +119,13 @@ impl Error {
         self
     }
 
+    /// Counts bytes, not characters, so a span that belongs to another file can't land inside a
+    /// character and panic.
+    pub fn line(&self, source: &str) -> Option<usize> {
+        let before = source.as_bytes().get(..self.span?.start)?;
+        Some(before.iter().filter(|&&b| b == b'\n').count() + 1)
+    }
+
     pub fn render(&self, source: &str, filename: Option<&str>) -> String {
         let mut out = self.to_string();
         let Some(span) = self.span else {
@@ -149,5 +174,13 @@ mod tests {
         let text = err.render(src, Some("test.meow"));
         assert!(text.contains("test.meow:1:13"), "{text}");
         assert!(text.ends_with('^'), "{text}");
+    }
+
+    #[test]
+    fn line_counts_from_one() {
+        let src = "meow(1);\nmeow(nope);";
+        let err = Error::name("`nope` hasn't been `scratch`ed yet").at(Span::new(14, 18));
+        assert_eq!(err.line(src), Some(2));
+        assert_eq!(Error::runtime("no span").line(src), None);
     }
 }

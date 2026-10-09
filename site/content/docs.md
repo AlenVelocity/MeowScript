@@ -239,7 +239,44 @@ Furbidden! type error: `-` doesn't work between whiskers and a number
    |             ^^^^^^^^^^
 ```
 
-The exclamation tells you the kind: *Meowch!* for syntax, *Meow-sterious!* for an unknown name, *Furbidden!* for a type mismatch, *Paws off!* for the wrong number of arguments, *Lost kitten!* for a pawckage that can't be found, *Scratched!* for file trouble, and *Hiss!* for everything else at run time.
+The exclamation tells you the kind: *Meowch!* for syntax, *Meow-sterious!* for an unknown name, *Furbidden!* for a type mismatch, *Paws off!* for the wrong number of arguments, *Lost kitten!* for a pawckage that can't be found, *Scratched!* for file trouble, *Hiss!* for everything else at run time, and *Yowl!* for a `yowl` that nothing caught.
+
+## Catching errors
+
+`curious` runs a block. If something in it goes wrong, the rest of the block is skipped and the `caught` block runs instead, with the error in the name you give after `caught`.
+
+```meow
+curious {
+    scratch n = "nine" - 1;
+    meow("never printed");
+} caught err {
+    meow(err's kind, "error on line", err's line + ":", err's message);
+}
+```
+
+An error from the interpreter arrives as an object with three keys. `kind` is one of `"syntax"`, `"name"`, `"type"`, `"arity"`, `"import"`, `"io"`, and `"runtime"`. `message` is what went wrong, in the words the error would print. `line` is where it happened, or `mew` when that isn't known. The whole file is read before any of it runs, so a syntax error in it stops the program before `curious` gets a chance.
+
+`yowl` raises trouble of your own. It takes any value, and `caught` receives that value unchanged.
+
+```meow
+pawction feed(grams) {
+    purrhaps grams > 80 {
+        yowl { reason: "too much kibble", grams };
+    }
+    meow("Serving", grams, "grams");
+}
+
+curious {
+    feed(40);
+    feed(200);
+} caught problem {
+    meow("Refused", problem's grams, "grams:", problem's reason);
+}
+```
+
+Leave out the name when you don't need it: `curious { feed(500); } caught { meow("no dinner"); }`.
+
+A `yowl` that nothing catches stops the program with *Yowl!* and the value, like any other error. `tail`, `hiss`, and `continue` pass through a `curious` block untouched. An error inside `caught` goes to the next `curious` out, if there is one. `assert` from `nya:clawtility` fails with a runtime error, so it can be caught too.
 
 ## The command line
 

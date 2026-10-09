@@ -146,6 +146,11 @@ impl Parser {
             }
             TokenKind::Furrever => self.loop_stmt()?,
             TokenKind::Fur => self.for_stmt()?,
+            TokenKind::Curious => self.try_stmt()?,
+            TokenKind::Yowl => self.throw_stmt()?,
+            TokenKind::Caught => {
+                return Err(self.error_here("`caught` needs a `curious` block before it"));
+            }
             TokenKind::Semicolon => {
                 return Err(self.error_here("stray `;`; there is no statement before it"));
             }
@@ -282,6 +287,34 @@ impl Parser {
         }
         let body = self.block("to start the `fur` body")?;
         Ok(StmtKind::ForIn { var, iter, body })
+    }
+
+    fn try_stmt(&mut self) -> Result<StmtKind> {
+        self.advance();
+        let body = self.block("to start the `curious` body")?;
+        self.expect(&TokenKind::Caught, "after the `curious` block")?;
+        let binding = if self.at(&TokenKind::LBrace) {
+            None
+        } else {
+            Some(self.expect_ident("or `{` after `caught`")?)
+        };
+        let handler = self.block("to start the `caught` body")?;
+        self.eat(&TokenKind::Semicolon);
+        Ok(StmtKind::Try {
+            body,
+            binding,
+            handler,
+        })
+    }
+
+    fn throw_stmt(&mut self) -> Result<StmtKind> {
+        self.advance();
+        if self.at(&TokenKind::Semicolon) || self.at(&TokenKind::RBrace) || self.at_eof() {
+            return Err(self.error_here("`yowl` needs a value, as in `yowl \"out of kibble\";`"));
+        }
+        let value = self.expression(0)?;
+        self.end_statement("`yowl`")?;
+        Ok(StmtKind::Throw { value })
     }
 
     fn expression(&mut self, min_bp: u8) -> Result<Expr> {
@@ -759,6 +792,52 @@ mod tests {
         assert!(parse("fur x ~ xs { meow(x); }").is_ok());
         assert!(parse("fur (x ~ xs) { meow(x); }").is_ok());
         assert!(parse("fur x in xs {}").unwrap_err().message.contains("`~`"));
+    }
+
+    #[test]
+    fn curious_with_and_without_a_name() {
+        let p = parse("curious { risky(); } caught err { meow(err); }").unwrap();
+        let StmtKind::Try {
+            body,
+            binding,
+            handler,
+        } = &p.stmts[0].kind
+        else {
+            panic!("expected curious, got {:?}", p.stmts[0].kind)
+        };
+        assert_eq!(body.stmts.len(), 1);
+        assert_eq!(binding.as_ref().map(|b| &*b.name), Some("err"));
+        assert_eq!(handler.stmts.len(), 1);
+
+        let p = parse("curious { risky(); } caught { meow(1); }; meow(2);").unwrap();
+        assert!(matches!(
+            p.stmts[0].kind,
+            StmtKind::Try { binding: None, .. }
+        ));
+        assert_eq!(p.stmts.len(), 2);
+    }
+
+    #[test]
+    fn curious_needs_caught() {
+        let err = parse("curious { risky(); } meow(1);").unwrap_err();
+        assert!(err.message.contains("`caught`"), "{}", err.message);
+        assert!(parse("curious { risky(); }").unwrap_err().incomplete);
+        let err = parse("caught { meow(1); }").unwrap_err();
+        assert!(err.message.contains("`curious`"), "{}", err.message);
+        let err = parse("curious {} caught 5 {}").unwrap_err();
+        assert!(err.message.contains("a name or `{`"), "{}", err.message);
+    }
+
+    #[test]
+    fn yowl_takes_any_expression() {
+        let p = parse(r#"yowl "out of kibble"; yowl { code: 1 }"#).unwrap();
+        assert!(matches!(p.stmts[0].kind, StmtKind::Throw { .. }));
+        let StmtKind::Throw { value } = &p.stmts[1].kind else {
+            panic!()
+        };
+        assert!(matches!(value.kind, ExprKind::Object(_)));
+        let err = parse("yowl;").unwrap_err();
+        assert!(err.message.contains("needs a value"), "{}", err.message);
     }
 
     #[test]

@@ -2,6 +2,13 @@
 
 Each release has a section here. The release workflow uses the matching section as the GitHub release notes.
 
+## Unreleased
+
+### Language
+
+- `curious { ... } caught err { ... }` catches errors, and `yowl value;` raises one. An error from the interpreter arrives in `caught` as an object with `kind`, `message`, and `line`; a yowled value arrives unchanged. A `yowl` that nothing catches stops the program with `Yowl!`.
+- `curious`, `caught`, and `yowl` are keywords now, so programs that used them as names need to rename them.
+
 ## 0.1.0 (2026-10-08)
 
 The first release of the rewritten interpreter. The previous code, kept in git history, was a learning project that had stopped compiling; this is a new implementation with the same keywords.

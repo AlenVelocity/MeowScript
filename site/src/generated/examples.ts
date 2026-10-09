@@ -51,6 +51,12 @@ export const examples: Example[] = [
     "source": "// A tour of the nya:whiskers pawckage.\npawckage \"nya:whiskers\";\n\nscratch greeting = \"  meow meow, purr  \";\npurr(\"[\" + trim(greeting) + \"]\");\npurr(upper(trim(greeting)));\npurr(split(trim(greeting), \" \"));\npurr(replace(trim(greeting), \"meow\", \"nya\"));\npurr(starts_with(trim(greeting), \"meow\"), ends_with(trim(greeting), \"purr\"));\npurr(pawrse(\"42\") + 1, pawrse(\"nine\"));\npurr(pad_start(\"7\", 3, \"0\"), \"|\" + pad_end(\"cat\", 6, \".\") + \"|\");\npurr(reverse(\"stressed\"));\npurr(length(\"🐱 cat\"), \"characters\");\n\nfur letter ~ \"cat\" {\n    purr(letter, \"-\", letter * 3);\n}\n"
   },
   {
+    "id": "curious",
+    "file": "curious.meow",
+    "description": "Catching trouble with curious and caught, and making your own with yowl.",
+    "source": "// Catching trouble with curious and caught, and making your own with yowl.\npawckage \"nya:whiskers\";\n\npawction portion(order) {\n    scratch grams = pawrse(order);\n    purrhaps grams == mew {\n        yowl { reason: \"that isn't a number\", order };\n    }\n    purrhaps grams > 80 {\n        yowl \"that's more kibble than one cat should eat\";\n    }\n    tail grams;\n}\n\nfur order ~ [\"40\", \"lots\", \"200\"] {\n    curious {\n        meow(\"Serving\", portion(order), \"grams\");\n    } caught problem {\n        purrhaps furreal problem == \"object\" {\n            meow(\"Can't serve\", problem's order + \":\", problem's reason);\n        } meowtually {\n            meow(\"Can't serve\", order + \":\", problem);\n        }\n    }\n}\n\n// Mistakes the interpreter finds arrive as an object with a kind, a message, and a line.\ncurious {\n    scratch bowl = \"full\";\n    amew bowl = bowl - 1;\n} caught err {\n    purr(err's kind, \"error on line\", err's line + \":\", err's message);\n}\n\n// Leave out the name after caught when you don't need it.\ncurious {\n    yowl \"the vase is on the floor\";\n} caught {\n    meow(\"Nothing to see here.\");\n}\n"
+  },
+  {
     "id": "toy",
     "file": "toy.meow",
     "description": "Random choices from the nya:rundamn pawckage.",

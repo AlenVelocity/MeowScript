@@ -1,9 +1,9 @@
-//! Tree-walking evaluator. `tail`, `hiss`, `continue`, and errors travel up through the `Err`
-//! side of [`Flow`], so the happy path only deals with values.
+//! Tree-walking evaluator. `tail`, `hiss`, `continue`, `yowl`, and errors travel up through the
+//! `Err` side of [`Flow`], so the happy path only deals with values.
 
 use crate::ast::*;
 use crate::env::Env;
-use crate::error::{Error, Result};
+use crate::error::{Error, ErrorKind, Result};
 use crate::host::Host;
 use crate::parser::parse;
 use crate::rng::Rng;
@@ -20,6 +20,7 @@ enum Interrupt {
     Return(Value),
     Break(Span),
     Continue(Span),
+    Throw(Value, Span),
     Error(Error),
 }
 
@@ -39,6 +40,11 @@ pub struct Interpreter {
     call_depth: usize,
     import_depth: usize,
     base_dir: Option<String>,
+    // The text being run, for the line numbers `caught` reports.
+    source: String,
+    // A `yowl` inside a callback crosses the built-in that called it (`map`, say) as an `Error`.
+    // Its value waits here and becomes a `Throw` again when the built-in returns.
+    in_flight: Option<(Value, Span)>,
 }
 
 impl Interpreter {
@@ -59,6 +65,8 @@ impl Interpreter {
             call_depth: 0,
             import_depth: 0,
             base_dir: None,
+            source: String::new(),
+            in_flight: None,
         }
     }
 
@@ -83,10 +91,28 @@ impl Interpreter {
     /// the last expression statement.
     pub fn run(&mut self, source: &str) -> Result<Value> {
         let program = parse(source)?;
-        self.exec_program(&program)
+        let saved = std::mem::replace(&mut self.source, source.to_string());
+        let result = self.exec_program(&program);
+        self.source = saved;
+        result
     }
 
     pub fn call(&mut self, callee: Value, args: Vec<Value>, span: Option<Span>) -> Result<Value> {
+        match self.call_flow(callee, args, span) {
+            Ok(v) => Ok(v),
+            Err(Interrupt::Throw(value, at)) => {
+                let error = uncaught(&value, at);
+                self.in_flight = Some((value, at));
+                Err(error)
+            }
+            Err(Interrupt::Error(e)) => Err(e),
+            Err(Interrupt::Return(_) | Interrupt::Break(_) | Interrupt::Continue(_)) => {
+                unreachable!("call_flow settles these itself")
+            }
+        }
+    }
+
+    fn call_flow(&mut self, callee: Value, args: Vec<Value>, span: Option<Span>) -> Flow<Value> {
         let attach = |e: Error| match span {
             Some(s) => e.or_at(s),
             None => e,
@@ -99,9 +125,13 @@ impl Interpreter {
                         b.name,
                         b.arity.describe(),
                         args.len()
-                    ))));
+                    )))
+                    .into());
                 }
-                (b.func)(self, args).map_err(attach)
+                (b.func)(self, args).map_err(|e| match self.in_flight.take() {
+                    Some((value, at)) if e.kind == ErrorKind::Thrown => Interrupt::Throw(value, at),
+                    _ => attach(e).into(),
+                })
             }
             Value::Function(closure) => {
                 let def = &closure.def;
@@ -115,12 +145,14 @@ impl Interpreter {
                         "{name} takes {n} argument{}, but got {}",
                         if n == 1 { "" } else { "s" },
                         args.len()
-                    ))));
+                    )))
+                    .into());
                 }
                 if self.call_depth >= MAX_CALL_DEPTH {
                     return Err(attach(Error::runtime(format!(
                         "pawctions are nested more than {MAX_CALL_DEPTH} calls deep; is there a recursion with no way out?"
-                    ))));
+                    )))
+                    .into());
                 }
                 let env = closure.env.child();
                 for (param, arg) in def.params.iter().zip(args) {
@@ -133,19 +165,24 @@ impl Interpreter {
                 self.call_depth -= 1;
                 match result {
                     Ok(v) | Err(Interrupt::Return(v)) => Ok(v),
-                    Err(Interrupt::Error(e)) => Err(e),
                     Err(Interrupt::Break(s)) => {
-                        Err(Error::runtime("`hiss` only works inside a loop").at(s))
+                        Err(Error::runtime("`hiss` only works inside a loop")
+                            .at(s)
+                            .into())
                     }
                     Err(Interrupt::Continue(s)) => {
-                        Err(Error::runtime("`continue` only works inside a loop").at(s))
+                        Err(Error::runtime("`continue` only works inside a loop")
+                            .at(s)
+                            .into())
                     }
+                    Err(other) => Err(other),
                 }
             }
             other => Err(attach(Error::type_(format!(
                 "only pawctions can be called, and this is a {}",
                 other.type_name()
-            )))),
+            )))
+            .into()),
         }
     }
 
@@ -157,6 +194,7 @@ impl Interpreter {
         match self.exec_stmts(&program.stmts) {
             Ok(v) | Err(Interrupt::Return(v)) => Ok(v),
             Err(Interrupt::Error(e)) => Err(e),
+            Err(Interrupt::Throw(value, span)) => Err(uncaught(&value, span)),
             Err(Interrupt::Break(s)) => {
                 Err(Error::runtime("`hiss` only works inside a loop").at(s))
             }
@@ -250,8 +288,41 @@ impl Interpreter {
                 }
                 Ok(Value::Null)
             }
+            StmtKind::Try {
+                body,
+                binding,
+                handler,
+            } => {
+                let caught = match self.exec_block(body) {
+                    Ok(_) => return Ok(Value::Null),
+                    Err(Interrupt::Throw(value, _)) => value,
+                    Err(Interrupt::Error(e)) => self.error_value(&e),
+                    Err(other) => return Err(other),
+                };
+                let scope = self.env.child();
+                if let Some(name) = binding {
+                    scope.define(name.name.clone(), caught);
+                }
+                let saved = std::mem::replace(&mut self.env, scope);
+                let result = self.exec_block(handler);
+                self.env = saved;
+                result.map(|_| Value::Null)
+            }
+            StmtKind::Throw { value } => {
+                let v = self.eval(value)?;
+                Err(Interrupt::Throw(v, stmt.span))
+            }
             StmtKind::Expr(expr) => self.eval(expr),
         }
+    }
+
+    fn error_value(&self, e: &Error) -> Value {
+        let mut map = IndexMap::new();
+        map.insert("kind".into(), Value::str(e.kind.word()));
+        map.insert("message".into(), Value::str(e.message.as_str()));
+        let line = e.line(&self.source).map_or(Value::Null, Value::from);
+        map.insert("line".into(), line);
+        Value::object(map)
     }
 
     fn iterate(&self, value: &Value) -> Result<Vec<Value>> {
@@ -439,7 +510,7 @@ impl Interpreter {
                 for arg in args {
                     values.push(self.eval(arg)?);
                 }
-                self.call(f, values, Some(expr.span))?
+                self.call_flow(f, values, Some(expr.span))?
             }
             ExprKind::Index { object, index } => {
                 let obj = self.eval(object)?;
@@ -492,9 +563,11 @@ impl Interpreter {
         let module_env = self.prelude.child();
         let saved_env = std::mem::replace(&mut self.env, module_env.clone());
         let saved_dir = std::mem::replace(&mut self.base_dir, parent_dir(&resolved));
+        let saved_source = std::mem::replace(&mut self.source, source.clone());
         self.import_depth += 1;
         let result = self.exec_program(&program);
         self.import_depth -= 1;
+        self.source = saved_source;
         self.base_dir = saved_dir;
         self.env = saved_env;
         result.map_err(|e| {
@@ -545,6 +618,10 @@ impl Interpreter {
             None => String::new(),
         }
     }
+}
+
+fn uncaught(value: &Value, span: Span) -> Error {
+    Error::new(ErrorKind::Thrown, value.to_string()).at(span)
 }
 
 fn binary(op: BinaryOp, l: &Value, r: &Value) -> Result<Value> {
@@ -745,6 +822,10 @@ mod tests {
         run(src).0.unwrap_err()
     }
 
+    fn field(object: &Value, key: &str) -> Value {
+        get_index(object, &Value::from(key)).unwrap()
+    }
+
     #[test]
     fn arithmetic_and_precedence() {
         assert_eq!(eval("1 + 2 * 3"), Value::from(7.0));
@@ -942,6 +1023,95 @@ mod tests {
         let e = error("pawckage \"nya:dogs\";");
         assert!(e.message.contains("nya:furrball"), "{}", e.message);
         assert!(error("floor(1)").message.contains("hasn't been"));
+    }
+
+    #[test]
+    fn curious_catches_interpreter_errors_as_objects() {
+        let src = "scratch got = mew;\ncurious {\n    scratch n = \"nine\" - 1;\n} caught err {\n    amew got = err;\n}\ngot";
+        let got = eval(src);
+        assert_eq!(field(&got, "kind"), Value::from("type"));
+        assert_eq!(
+            field(&got, "message"),
+            Value::from("`-` doesn't work between whiskers and a number")
+        );
+        assert_eq!(field(&got, "line"), Value::from(3.0));
+        assert_eq!(
+            output(
+                "pawckage \"nya:clawtility\"; curious { assert(clawful, \"no\"); } caught e { purr(e's kind, e's message); }"
+            ),
+            vec!["runtime assertion failed: no"]
+        );
+        assert_eq!(
+            output("curious { nope(); } caught { purr(\"caught\"); } purr(\"after\");"),
+            vec!["caught", "after"]
+        );
+    }
+
+    #[test]
+    fn curious_catches_a_yowled_value_as_it_was() {
+        let src = "scratch thing = { code: 7 }; scratch got = mew;\
+                   curious { yowl thing; } caught e { amew got = e; }\
+                   amew got's seen = purrfect;\
+                   [got's code, thing's seen]";
+        assert_eq!(eval(src), Value::array(vec![7.0.into(), true.into()]));
+        assert_eq!(
+            output(
+                "pawction deep(n) { purrhaps n == 0 { yowl \"bottom\"; } deep(n - 1); } curious { deep(5); } caught e { purr(e); }"
+            ),
+            vec!["bottom"]
+        );
+    }
+
+    #[test]
+    fn yowl_survives_a_trip_through_a_builtin() {
+        let src = "pawckage \"nya:furrball\";\
+                   curious { map([1, 2], pawction(x) { yowl { n: x }; }); } caught e { purr(e's n); }";
+        assert_eq!(output(src), vec!["1"]);
+        let e = error(
+            "pawckage \"nya:furrball\"; each([1], pawction(x) { yowl \"from a callback\"; });",
+        );
+        assert_eq!(e.kind, ErrorKind::Thrown);
+        assert_eq!(e.message, "from a callback");
+    }
+
+    #[test]
+    fn control_flow_passes_through_curious() {
+        assert_eq!(
+            eval("pawction f() { curious { tail 1; } caught { tail 2; } tail 3; } f()"),
+            Value::from(1.0)
+        );
+        assert_eq!(
+            output(
+                "fur i ~ 5 { curious { purrhaps i == 1 { continue; } purrhaps i == 3 { hiss; } purr(i); } caught { purr(\"no\"); } }"
+            ),
+            vec!["0", "2"]
+        );
+    }
+
+    #[test]
+    fn errors_in_caught_propagate_and_nesting_works() {
+        let e = error("curious { yowl 1; } caught e { nope(); }");
+        assert_eq!(e.kind, ErrorKind::Name);
+        assert_eq!(
+            output(
+                "curious { curious { yowl 1; } caught e { yowl e + 1; } } caught e { purr(e); }"
+            ),
+            vec!["2"]
+        );
+    }
+
+    #[test]
+    fn uncaught_yowl_renders_like_any_other_error() {
+        let src = "meow(\"start\");\nyowl \"out of kibble\";";
+        let e = error(src);
+        assert_eq!(e.kind, ErrorKind::Thrown);
+        let text = e.render(src, Some("bowl.meow"));
+        assert!(
+            text.starts_with("Yowl! uncaught yowl: out of kibble"),
+            "{text}"
+        );
+        assert!(text.contains("bowl.meow:2:1"), "{text}");
+        assert_eq!(error("yowl { code: 1 };").message, "{code: 1}");
     }
 
     #[test]

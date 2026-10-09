@@ -38,6 +38,8 @@ Meow! This is Salem (a witch's familiar)
 | `furrever { }`, `furrever cond { }` | loop forever, loop while |
 | `fur item ~ things { }` | for each (furrballs, whiskers, object keys, or `0..n`) |
 | `hiss;` / `continue;` | break / continue |
+| `curious { } caught err { }` | try / catch (the name after `caught` is optional) |
+| `yowl value;` | throw any value |
 | `purrfect`, `clawful`, `mew` | true, false, null |
 | `furreal x` | typeof: `"number"`, `"whiskers"`, `"furrball"`, … |
 | `cat's name`, `cat["name"]` | property access |

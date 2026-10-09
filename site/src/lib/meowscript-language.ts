@@ -21,6 +21,9 @@ export const KEYWORDS = [
   "fur",
   "hiss",
   "continue",
+  "curious",
+  "caught",
+  "yowl",
 ] as const;
 
 const KEYWORD_SET = new Set<string>(KEYWORDS);

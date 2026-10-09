@@ -58,6 +58,14 @@ pub enum StmtKind {
         iter: Expr,
         body: Block,
     },
+    Try {
+        body: Block,
+        binding: Option<Ident>,
+        handler: Block,
+    },
+    Throw {
+        value: Expr,
+    },
     Expr(Expr),
 }
 

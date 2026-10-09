@@ -4,7 +4,7 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
-const ORDER = ["hello", "yarn", "fizzbuzz", "closures", "recursion", "furrball", "whiskers", "toy", "naptime"];
+const ORDER = ["hello", "yarn", "fizzbuzz", "closures", "recursion", "furrball", "whiskers", "curious", "toy", "naptime"];
 
 const examplesDir = new URL("../../examples/", import.meta.url);
 const outFile = fileURLToPath(new URL("../src/generated/examples.ts", import.meta.url));
