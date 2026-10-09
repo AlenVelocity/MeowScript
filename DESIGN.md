@@ -70,6 +70,7 @@ No gradients, no centered hero with three cards, no emoji as icons (the paw is o
 - Error: the interpreter's rendered error, with its caret line, in `danger` and preserved whitespace.
 - Worker failed to start: an explanation and a link to the issue tracker.
 - Output over 3000 lines: the oldest are trimmed with a note.
+- Sharing: Share writes the program into the URL fragment and copies the link. Its label reads "Link copied" for two seconds, or "Link is in the address bar" when the clipboard refuses. Opening a link loads its program with the picker set to "from a link"; a link that won't decode loads the default example with a note under the playground.
 
 ## Motion
 

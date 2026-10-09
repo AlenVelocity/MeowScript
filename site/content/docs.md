@@ -4,6 +4,8 @@ MeowScript is a small, dynamically typed scripting language. Its keywords are ca
 
 If you just want to poke at it, the [playground](/#playground) runs everything on this page. Every listing has a *Try it* button.
 
+The playground's Share button puts the program in the link.
+
 ## A first program
 
 ```meow

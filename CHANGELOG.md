@@ -9,6 +9,10 @@ Each release has a section here. The release workflow uses the matching section 
 - `curious { ... } caught err { ... }` catches errors, and `yowl value;` raises one. An error from the interpreter arrives in `caught` as an object with `kind`, `message`, and `line`; a yowled value arrives unchanged. A `yowl` that nothing catches stops the program with `Yowl!`.
 - `curious`, `caught`, and `yowl` are keywords now, so programs that used them as names need to rename them.
 
+### Playground
+
+- A Share button puts the program in the page's URL and copies the link. Opening the link loads that program.
+
 ## 0.1.0 (2026-10-08)
 
 The first release of the rewritten interpreter. The previous code, kept in git history, was a learning project that had stopped compiling; this is a new implementation with the same keywords.
